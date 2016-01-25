@@ -14,7 +14,7 @@ namespace EmplyeeCRUDUsingBackBone.Controllers
     public class EmployeeCrudController : ApiController
     {
         private EmpContext empContext = new EmpContext();
-
+        [HttpGet]
         public HttpResponseMessage GetAll()
         {
            return  Request.CreateResponse(HttpStatusCode.OK, empContext.Employees.ToList(),System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);

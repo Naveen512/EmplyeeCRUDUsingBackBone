@@ -29,6 +29,11 @@ namespace EmplyeeCRUDUsingBackBone
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi2",
+                routeTemplate: "api/{controller}/{Action}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
 
         }
     }
