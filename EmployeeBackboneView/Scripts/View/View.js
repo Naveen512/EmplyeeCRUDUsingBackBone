@@ -71,7 +71,7 @@
         deleteMethod:function(e){
             var id = Number(e.currentTarget.parentElement.parentElement.getAttribute('data-val'));
             this.model.url = this.model.uriRoot + "DeleteEmployee?id="+id
-            //this.model.set('id', '');
+            this.model.set('id', '');
             this.model.destroy({
                 success:function(model,data)
                 {
