@@ -4,22 +4,41 @@
 }
 
 <h2>Index</h2>
-<div class="form-group col-md-3">
-    <label class="control-label" for="FirstName">Firs Name</label>
-    <input class="form-control" id="FirstName" type="text" >
+
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div></div>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+              <div></div>
+            </div>
+         </div>
+    </div>
 </div>
-<div class="form-group col-md-3">
-    <label class="control-label" for="SecondName">Second Name</label>
-    <input class="form-control" id="SecondName" type="text" >
+<div id="FiledElements">
+    <div class="form-group col-md-3">
+        <label class="control-label" for="FirstName">Firs Name</label>
+        <input class="form-control" id="FirstName" type="text">
+    </div>
+    <div class="form-group col-md-3">
+        <label class="control-label" for="SecondName">Second Name</label>
+        <input class="form-control" id="SecondName" type="text">
+    </div>
+    <div class="form-group col-md-3">
+        <label class="control-label" for="Email">Email</label>
+        <input class="form-control" id="Email" type="text">
+    </div>
+    <div class="form-group col-md-3">
+        <label class="control-label" for="Salary">Salary</label>
+        <input class="form-control" id="Salary" type="text">
+    </div>
 </div>
-<div class="form-group col-md-3">
-    <label class="control-label" for="Email">Email</label>
-    <input class="form-control" id="Email" type="text" >
-</div>
-<div class="form-group col-md-3">
-    <label class="control-label" for="Salary">Salary</label>
-    <input class="form-control" id="Salary" type="text">
-</div>
+
 <a href="#" id="AddEmp" class="btn btn-primary">Primary</a>
 <br />
 <br />
@@ -39,8 +58,8 @@
 
     </tbody>
 </table>
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script src="~/Scripts/underscore.js"></script>
 <script src="~/Scripts/backbone.js"></script>
 <script src="~/Scripts/View/Model.js"></script>

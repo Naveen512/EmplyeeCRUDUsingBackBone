@@ -10,7 +10,7 @@ using System.Web.Http.Cors;
 
 namespace EmplyeeCRUDUsingBackBone.Controllers
 {
-    [EnableCors(origins:"*",headers:"*",methods:"*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class EmployeeCrudController : ApiController
     {
         private EmpContext empContext = new EmpContext();
@@ -19,7 +19,6 @@ namespace EmplyeeCRUDUsingBackBone.Controllers
         {
            return  Request.CreateResponse(HttpStatusCode.OK, empContext.Employees.ToList(),System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
         }
-
         [HttpPost]
         public HttpResponseMessage AddEmployee([FromUri] Employee employee)
         {
@@ -38,6 +37,23 @@ namespace EmplyeeCRUDUsingBackBone.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK, emp, System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
 
+        }
+        [HttpPut]
+        public HttpResponseMessage UpdateEmployee([FromUri] Employee emp)
+        {
+            if(emp==null)
+            {
+                throw new ArgumentNullException("No emp item");
+            }
+            var dbemp = empContext.Employees.ToList();
+            int index = dbemp.FindIndex(p => p.EmployeeID == emp.EmployeeID);
+            if (index == -1)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "No emp item");
+            }
+            dbemp.Insert(index, emp);
+            empContext.SaveChanges();
+            return Request.CreateResponse(HttpStatusCode.OK, emp);
         }
     }
 }
