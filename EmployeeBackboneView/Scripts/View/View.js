@@ -10,7 +10,9 @@
             'click #deletebutton': 'deleteModalPopUP',
             'click #AddEmp': 'AddMethod',
             'click #delDelete': 'comfirmDelteMethod',
-            'click #delClose':'closePopUp'
+            'click #delClose': 'closePopUp',
+            'click #updatebutton': 'updateModalPopUP',
+            'click #updatebtn':'confirmUpdate'
         },
         initialize: function () {
             this.model = new EmployeeSample.EmployeeModel.EmployeeModel();
@@ -27,7 +29,7 @@
                             "</td><td>" + val.SecondName +
                             "</td><td>" + val.Email
                             + "</td><td>" + val.Salary +
-                            "</td><td><a id='deletebutton' href='#' class='glyphicon glyphicon-trash'></td></tr>")
+                            "</td><td><a id='deletebutton' href='#' class='glyphicon glyphicon-trash'></td><td><a id='updatebutton' href='#' class='glyphicon glyphicon-pencil'></td></tr>")
 
 
                     });
@@ -38,14 +40,19 @@
         AddMethod: function () {
 
 
-            var FirstName = $('#FirstName').val();
-            var SecondName = $('#SecondName').val();
-            var Email = $('#Email').val();
-            var Salary = $('#Salary').val()
+            //var FirstName = $('#FirstName').val();
+            //var SecondName = $('#SecondName').val();
+            //var Email = $('#Email').val();
+            //var Salary = $('#Salary').val()
 
-            this.model.url = this.model.uriRoot + "AddEmployee?FirstName=" + FirstName + "&SecondName=" + SecondName + "&Email=" + Email + "&Salary=" + Salary;
-
-
+            //this.model.url = this.model.uriRoot + "AddEmployee?FirstName=" + FirstName + "&SecondName=" + SecondName + "&Email=" + Email + "&Salary=" + Salary;
+            this.model = new EmployeeSample.EmployeeModel.EmployeeModel({
+                 FirstName : $('#FirstName').val(),
+                 SecondName : $('#SecondName').val(),
+                 Email : $('#Email').val(),
+                Salary : $('#Salary').val()
+            });
+            this.model.url = this.model.uriRoot + "AddEmployee";
             //this.model.
             this.model.save({},
                 
@@ -59,7 +66,7 @@
                         "</td><td>" + data.get('SecondName') +
                         "</td><td>" + data.get('Email')
                         + "</td><td>" + data.get('Salary') +
-                        "</td><td><a id='deletebutton' href='#' class='glyphicon glyphicon-trash'></td></tr>")
+                        "</td><td><a id='deletebutton' href='#' class='glyphicon glyphicon-trash'></td><td><a id='updatebutton' href='#' class='glyphicon glyphicon-pencil'></tr>")
 
                     $('#FirstName').val("");
                    $('#SecondName').val("");
@@ -141,12 +148,11 @@
         comfirmDelteMethod: function () {
             var id = Number($("#recordToDeleteid").text());
             this.model.url = this.model.uriRoot + "DeleteEmployee?id=" + id;
-            this.model.set('id', id);
+            this.model.set('EmployeeID', id);
             this.model.destroy({
                 success: function (data) {
                     $("tr[data-val='" + id + "']").remove();
                     $(".bs-example-modal-lg").modal('hide');
-                    this.model.set('id', '');
                 },
                 error: function () {
                     console.log("deletion failed")
@@ -155,6 +161,84 @@
         },
         closePopUp: function () {
             $(".bs-example-modal-lg").modal('hide');
+        },
+        updateModalPopUP: function (e) {
+            var id = Number(e.currentTarget.parentElement.parentElement.getAttribute('data-val'));
+            var popFirstName = $("tr[data-val='" + id + "']").children()[1].innerHTML;
+            var popLastName = $("tr[data-val='" + id + "']").children()[2].innerHTML;
+            var popEmail = $("tr[data-val='" + id + "']").children()[3].innerHTML;
+            var popSalary = $("tr[data-val='" + id + "']").children()[4].innerHTML
+            var EditTemplate = "<form class='form-horizontal'>\
+                                   <span id='recordToDeleteid' style='display:none'>"+ id + "</span>\
+                                   <div class='form-group'>\
+                                       <label for='ModalFirstName' class='col-lg-5 control-label'>First Name</label>\
+                                        <div class='col-lg-7'>\
+                                         <input class='form-control' id='ModalFirstName' type='text' value="+popFirstName+">\
+                                        </div>\
+                                   </div>\
+                                   <div class='form-group'>\
+                                       <label for='ModalSecondName' class='col-lg-5 control-label'>Last Name</label>\
+                                        <div class='col-lg-7'>\
+                                         <input class='form-control' id='ModalSecondName' type='text' value=" + popLastName + ">\
+                                        </div>\
+                                   </div>\
+                                  <div class='form-group'>\
+                                       <label for='ModalEmail' class='col-lg-5 control-label'>Email</label>\
+                                        <div class='col-lg-7'>\
+                                         <input class='form-control' id='ModalEmail' type='text' value=" + popEmail + ">\
+                                        </div>\
+                                   </div>\
+                                   <div class='form-group'>\
+                                       <label for='ModalSalary' class='col-lg-5 control-label'>Salary</label>\
+                                        <div class='col-lg-7'>\
+                                          <input class='form-control' id='ModalSalary' type='text'value=" + popSalary + ">\
+                                        </div>\
+                                   </div>\
+                                </form>";
+            var FooterTemplate = " <button type='button' id='delClose' class='btn btn-default' data-dismiss='modal'>Close</button>\
+                                    <button type='button' id='updatebtn' class='btn btn-primary'>Update</button>";
+
+            var HeaderTemplate = "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>\
+               <h4 class='modal-title' id='exampleModalLabel'>Upadate Confimration</h4>";
+
+            $(".modal-body").html(EditTemplate);
+            $(".modal-footer").html(FooterTemplate);
+            $(".modal-header").html(HeaderTemplate);
+
+
+            $(".bs-example-modal-lg").modal('show');
+        },
+        confirmUpdate: function () {
+            var id = Number($("#recordToDeleteid").text());
+            //emp = {
+            //    'EmployeeID':$("#recordToDeleteid").text(),
+            //    'FirstName': $('#FirstName').val(),
+            //    'SecondName': $('#SecondName').val(),
+            //    'Email': $('#Email').val(),
+            //    'Salary': $('#Salary').val()
+            //};
+             this.model = new EmployeeSample.EmployeeModel.EmployeeModel({
+                 EmployeeID:$("#recordToDeleteid").text(),
+                 FirstName: $('#ModalFirstName').val(),
+                 SecondName: $('#ModalSecondName').val(),
+                 Email: $('#ModalEmail').val(),
+                 Salary: $('#ModalSalary').val()
+            });
+            this.model.url = this.model.uriRoot + "UpdateEmployee";
+            this.model.save({}, {
+
+                success: function (modal, data) {
+                    $("tr[data-val='" + id + "']").children()[1].innerHTML = data.FirstName;
+                    $("tr[data-val='" + id + "']").children()[2].innerHTML = data.SecondName;
+                    $("tr[data-val='" + id + "']").children()[3].innerHTML = data.Email;
+                    $("tr[data-val='" + id + "']").children()[4].innerHTML = data.Salary;
+                    $(".bs-example-modal-lg").modal('hide');
+                },
+                error: function () {
+                    console.log("Update canceled");
+                }
+
+            });
         }
     });
     EmployeeSample.View = Views;

@@ -4,7 +4,7 @@
     var Model = {};
 
     Model.EmployeeModel = Backbone.Model.extend({
-       
+        idAttribute: 'EmployeeID',
         uriRoot: "http://localhost:1976/api/EmployeeCrud/"
     });
 

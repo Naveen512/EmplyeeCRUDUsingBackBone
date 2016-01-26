@@ -7,6 +7,7 @@ using System.Web.Http;
 using EmplyeeCRUDUsingBackBone.DAL;
 using EmplyeeCRUDUsingBackBone.Models;
 using System.Web.Http.Cors;
+using System.Data.Entity;
 
 namespace EmplyeeCRUDUsingBackBone.Controllers
 {
@@ -20,7 +21,7 @@ namespace EmplyeeCRUDUsingBackBone.Controllers
            return  Request.CreateResponse(HttpStatusCode.OK, empContext.Employees.ToList(),System.Net.Http.Formatting.JsonMediaTypeFormatter.DefaultMediaType);
         }
         [HttpPost]
-        public HttpResponseMessage AddEmployee([FromUri] Employee employee)
+        public HttpResponseMessage AddEmployee(Employee employee)
         {
             empContext.Employees.Add(employee);
             empContext.SaveChanges();
@@ -39,20 +40,23 @@ namespace EmplyeeCRUDUsingBackBone.Controllers
 
         }
         [HttpPut]
-        public HttpResponseMessage UpdateEmployee([FromUri] Employee emp)
+        public HttpResponseMessage UpdateEmployee( Employee emp)
         {
             if(emp==null)
             {
                 throw new ArgumentNullException("No emp item");
             }
-            var dbemp = empContext.Employees.ToList();
-            int index = dbemp.FindIndex(p => p.EmployeeID == emp.EmployeeID);
-            if (index == -1)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "No emp item");
-            }
-            dbemp.Insert(index, emp);
+            empContext.Entry(emp).State = EntityState.Modified;
             empContext.SaveChanges();
+            //var dbemp = empContext.Employees.ToList();
+            //int index = dbemp.FindIndex(p => p.EmployeeID == emp.EmployeeID);
+            //if (index == -1)
+            //{
+            //    return Request.CreateResponse(HttpStatusCode.BadRequest, "No emp item");
+            //}
+            //dbemp.RemoveAt(index);
+            //dbemp.Add(emp);
+            //empContext.SaveChanges();
             return Request.CreateResponse(HttpStatusCode.OK, emp);
         }
     }
